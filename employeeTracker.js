@@ -191,3 +191,115 @@ async function addRole(roleInfo) {
     const rows = await db.query(query, args);
     console.log(`Added role ${title}`);
 }
+
+async function mainPrompt() {
+    return inquirer
+        .prompt([
+            {
+                type: "list",
+                message: "What would you like to do?",
+                name: "action",
+                choices: [
+                    "Add department",
+                    "Add employee",
+                    "Add role",
+                    "Remove employee",
+                    "Update employee role",
+                    "View all departments",
+                    "View all employees",
+                    "View all employees by department",
+                    "View all roles",
+                    "Exit"
+                ]
+            }
+        ])
+}
+
+async function getAddEmployeeInfo() {
+    const managers = await getManagerNames();
+    const roles = await getRoles();
+    return inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "first_name",
+                message: "What is the employee's first name?"
+            },
+            {
+                type: "input",
+                name: "last_name",
+                message: "What is the employee's last name?"
+            },
+            {
+                type: "list",
+                message: "What is the employee's role?",
+                name: "role",
+                choices: [
+                    // populate from db
+                    ...roles
+                ]
+            },
+            {
+                type: "list",
+                message: "Who is the employee's manager?",
+                name: "manager",
+                choices: [
+                    // populate from db
+                    ...managers
+                ]
+            }
+        ])
+}
+
+async function getRemoveEmployeeInfo() {
+    const employees = await getEmployeeNames();
+    return inquirer
+        .prompt([
+            {
+                type: "list",
+                message: "Which employee do you want to remove?",
+                name: "employeeName",
+                choices: [
+                    // populate from db
+                    ...employees
+                ]
+            }
+        ])
+}
+
+async function getDepartmentInfo() {
+    return inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "What is the name of the new department?",
+                name: "departmentName"
+            }
+        ])
+}
+
+async function getRoleInfo() {
+    const departments = await getDepartmentNames();
+    return inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "What is the title of the new role?",
+                name: "roleName"
+            },
+            {
+                type: "input",
+                message: "What is the salary of the new role?",
+                name: "salary"
+            },
+            {
+                type: "list",
+                message: "Which department uses this role?",
+                name: "departmentName",
+                choices: [
+                    // populate from db
+                    ...departments
+                ]
+            }
+        ])
+}
