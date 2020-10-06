@@ -54,3 +54,58 @@ async function getDepartmentId(departmentName) {
     const rows = await db.query(query, args);
     return rows[0].id;
 }
+// Given the name of the role, what is its id?
+async function getRoleId(roleName) {
+    let query = "SELECT * FROM role WHERE role.title=?";
+    let args = [roleName];
+    const rows = await db.query(query, args);
+    return rows[0].id;
+}
+
+// need to find the employee.id of the named manager
+async function getEmployeeId(fullName) {
+    // First split the name into first name and last name
+    let employee = getFirstAndLastName(fullName);
+
+    let query = 'SELECT id FROM employee WHERE employee.first_name=? AND employee.last_name=?';
+    let args = [employee[0], employee[1]];
+    const rows = await db.query(query, args);
+    return rows[0].id;
+}
+
+async function getEmployeeNames() {
+    let query = "SELECT * FROM employee";
+
+    const rows = await db.query(query);
+    let employeeNames = [];
+    for (const employee of rows) {
+        employeeNames.push(employee.first_name + " " + employee.last_name);
+    }
+    return employeeNames;
+}
+
+async function viewAllRoles() {
+    console.log("");
+    // SELECT * FROM role;
+    let query = "SELECT * FROM role";
+    const rows = await db.query(query);
+    console.table(rows);
+    return rows;
+}
+
+async function viewAllDepartments() {
+    // SELECT * from department;
+
+    let query = "SELECT * FROM department";
+    const rows = await db.query(query);
+    console.table(rows);
+}
+
+async function viewAllEmployees() {
+    console.log("");
+
+    // SELECT * FROM employee;
+    let query = "SELECT * FROM employee";
+    const rows = await db.query(query);
+    console.table(rows);
+}
