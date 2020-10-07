@@ -10,6 +10,9 @@ This application allows user to do the following :
 - Delete employee, role, or department
 - View department salary budgets
 
+
+<img src="Screenshot.png" alt="">
+
 # Installation 
 
 1. Run npm install for all dependencies installations. 
